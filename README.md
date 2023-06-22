@@ -21,7 +21,7 @@ Afterwards, restart Vortex and you can begin installing supported Vampire Surviv
 
 ## How to make my Mod compatible with this Extension
 
-To make your mod compatible you either need to make your mod compatible with the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64), or you use the right file structure for your mod. Note though that if you do the latter mods that try to change the same file will overwrite yours, so it is recommended to use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64).
+To make your mod compatible you either need to make your mod compatible with the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64), or you use the right file structure for your mod. Note though that if you do the latter, mods that try to change the same file will overwrite yours, so it is recommended to use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64).
 
 Vampire Survivors is structured like this (most basic representation):
 ```
@@ -42,8 +42,11 @@ Vampire Survivors is structured like this (most basic representation):
 ﻿﻿﻿﻿﻿            |--> tilesets
 ```
 
-So if you use the VS ModLoader your file structure always loks like this:
+So if you use the VS ModLoader your file structure always looks like this:
 ﻿`resources/app/.webpack/renderer/mod_loaders/mods/[your mod name]`
 
 If you don't use the VS ModLoader your file structure can vary but should always contain every folder before your file until resources is reached. An example for the UI.png file:
 ﻿`resources/app/.webpack/renderer/assets/img/UI.png`
+
+ Note that the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64)
+ only works if another mod is actually active / installed
