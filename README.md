@@ -5,7 +5,7 @@
 This extension adds support for Vampire Survivors to [Vortex Mod Manager﻿](https://www.nexusmods.com/about/vortex/), enabling you to easily automate installation of mods for Vampire Survivors without having to worry about where the files are supposed to go, etc.
 
 ### At this time following mod types are supported:
-- Mods that are designed for the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) by QKekos and use the right file structure (e.g resources/app/.webpack/.../img.jpg)
+- Mods that are designed for the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) by Kekos and use the right file structure (e.g resources/app/.webpack/.../img.jpg)
 - Other Mods that use the right file structure (e.g resources/app/.webpack/.../img.jpg)
 
 Note that mods that change the same file and **DON'T** use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) will **NOT WORK**.
