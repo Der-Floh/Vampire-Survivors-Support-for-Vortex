@@ -19,6 +19,19 @@ You can also manually install it by downloading the main file and dragging it in
 
 Afterwards, restart Vortex and you can begin installing supported Vampire Survivors mods with Vortex.
 
+## Known Issues
+
+### Black Screen:
+If you encounter a black screen this is most likely because of 2 reasons.
+1. You enabled the VS ModLoader but no other mod. If the VS ModLoader is enabled alone it causes a black screen.
+2. You're using one of Kekos mods which have some issues with Vortex files because they try to load Vortex files as mods. These issues could also occur on other mods. To fix this you just need to add the following line into the main mod file (typically called `[modname].js`):
+
+`.filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`
+
+![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687611333-1920971107.jpeg)
+![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687611339-659603011.jpeg)
+﻿For the [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50) the file would be `MultipurposeQolMod.js` and for the [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61) Mod it would be `Castlevania.js`
+
 ## How to make my Mod compatible with this Extension
 
 To make your mod compatible you either need to make your mod compatible with the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64), or you use the right file structure for your mod. Note though that if you do the latter, mods that try to change the same file will overwrite yours, so it is recommended to use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64).
