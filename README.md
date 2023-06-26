@@ -63,3 +63,7 @@ If you don't use the VS ModLoader your file structure can vary but should always
 
  Note that the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64)
  only works if another mod is actually active / installed
+
+<br/>
+
+[!["Buy me a Floppy Disk"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/der_floh)
