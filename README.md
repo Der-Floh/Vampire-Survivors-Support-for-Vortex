@@ -26,6 +26,8 @@ If you encounter a black screen this is most likely because of 2 reasons.
 1. You enabled the VS ModLoader but no other mod. If the VS ModLoader is enabled alone it causes a black screen.
 2. You're using one of Kekos mods which have some issues with Vortex files because they try to load Vortex files as mods. These issues could also occur on other mods. To fix this you just need to add the following line into the main mod file (typically called `[modname].js`):
 
+### UPDATE: This should be fixed automatically uppon installing the Mod
+
 `.filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`
 
 ![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687611333-1920971107.jpeg)
