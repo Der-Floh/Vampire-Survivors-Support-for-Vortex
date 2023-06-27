@@ -58,23 +58,7 @@ function makeFindGame(api, gameSpec) {
 }
 
 function makeGetModPath(api, gameSpec) {
-  return () => {
-    if (false) {
-      return "path/to/custom/mods/folder";
-    } else {
-      api.sendNotification({
-        id: "test",
-        type: "info",
-        title: "Test",
-        message: "Path: " + gameSpec.game.modPath,
-      });
-      return getDefaultModPath(api, gameSpec);
-    }
-  };
-}
-
-function getDefaultModPath(api, gameSpec) {
-  return gameSpec.game.modPathIsRelative !== false ? gameSpec.game.modPath || "." : pathPattern(api, gameSpec.game, gameSpec.game.modPath);
+  return () => (gameSpec.game.modPathIsRelative !== false ? gameSpec.game.modPath || "." : pathPattern(api, gameSpec.game, gameSpec.game.modPath));
 }
 
 function makeRequiresLauncher(api, gameSpec) {
@@ -164,7 +148,7 @@ function fixGetMods(filePath) {
     let data = fs.readFileSync(filePath, "utf8");
 
     const getModsRegex = /getMods\s*\(\)\s*{([\s\S]*?)}/;
-    const readdirSyncRegex = /\.readdirSync\s*\(\s*path\.join\s*\(__dirname\s*,\s*"mods\/"\s*\)/;
+    const readdirSyncRegex = /{\s*withFileTypes:\s*true\s*}/;
 
     const getModsMatch = data.match(getModsRegex);
     if (!getModsMatch) return;
@@ -172,7 +156,7 @@ function fixGetMods(filePath) {
     const readdirSyncMatch = getModsMatch[0].match(readdirSyncRegex);
     if (!readdirSyncMatch) return;
 
-    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}\n            .filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`);
+    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}).filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex"`);
 
     fs.writeFileSync(filePath, modifiedData, "utf8");
     return true;
@@ -196,7 +180,7 @@ async function onDidInstallMod(gameId, archiveId, modId, context) {
       context.api.sendNotification({
         id: "fix_success_" + modId,
         type: "info",
-        title: "Fix Successfull",
+        title: "Fixed Mod",
         message: 'Successfully fixed Mod "' + modId + '"',
       });
     }
@@ -229,7 +213,9 @@ function applyGame(context, gameSpec) {
     );
   });
 
-  context.api.events.on("did-install-mod", async (gameId, archiveId, modId) => onDidInstallMod(gameId, archiveId, modId, context));
+  try {
+    context.api.events.on("did-install-mod", async (gameId, archiveId, modId) => onDidInstallMod(gameId, archiveId, modId, context));
+  } catch (err) {}
 }
 
 function main(context) {
