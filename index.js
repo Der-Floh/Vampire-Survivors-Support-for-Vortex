@@ -27,6 +27,7 @@ const spec = {
 const tools = [];
 
 const { actions, fs, util } = require("vortex-api");
+const vortex_api = require("vortex-api");
 const path = require("path");
 const template = require("string-template");
 
@@ -57,7 +58,23 @@ function makeFindGame(api, gameSpec) {
 }
 
 function makeGetModPath(api, gameSpec) {
-  return () => (gameSpec.game.modPathIsRelative !== false ? gameSpec.game.modPath || "." : pathPattern(api, gameSpec.game, gameSpec.game.modPath));
+  return () => {
+    if (false) {
+      return "path/to/custom/mods/folder";
+    } else {
+      api.sendNotification({
+        id: "test",
+        type: "info",
+        title: "Test",
+        message: "Path: " + gameSpec.game.modPath,
+      });
+      return getDefaultModPath(api, gameSpec);
+    }
+  };
+}
+
+function getDefaultModPath(api, gameSpec) {
+  return gameSpec.game.modPathIsRelative !== false ? gameSpec.game.modPath || "." : pathPattern(api, gameSpec.game, gameSpec.game.modPath);
 }
 
 function makeRequiresLauncher(api, gameSpec) {
@@ -86,6 +103,106 @@ function checkForModLoader(api, modloaderpath) {
   });
 }
 
+function findModsFolder(folderPath) {
+  try {
+    const files = fs.readdirSync(folderPath);
+
+    for (const file of files) {
+      const filePath = path.join(folderPath, file);
+      const stats = fs.statSync(filePath);
+
+      if (stats.isDirectory()) {
+        if (file === "mods") {
+          return filePath;
+        } else {
+          const modsFolderPath = findModsFolder(filePath);
+          if (modsFolderPath) {
+            return modsFolderPath;
+          }
+        }
+      }
+    }
+    return;
+  } catch (err) {
+    return;
+  }
+}
+
+function findMainModFile(modPath) {
+  try {
+    const modsFolderPath = findModsFolder(modPath);
+    const files = fs.readdirSync(modsFolderPath);
+    let dirname;
+    for (const file of files) {
+      const filePath = path.join(modsFolderPath, file);
+      const stat = fs.statSync(filePath);
+      if (stat.isDirectory()) {
+        dirname = path.basename(filePath);
+        const fileName = dirname + ".js";
+        const targetFilePath = path.join(filePath, fileName);
+        const exists = fs.statSync(targetFilePath, (err, stats) => {
+          if (!err && stats.isFile()) {
+            return targetFilePath;
+          } else {
+            return;
+          }
+        });
+        if (exists) {
+          return targetFilePath;
+        } else {
+          return;
+        }
+      }
+    }
+  } catch (err) {
+    return;
+  }
+}
+
+function fixGetMods(filePath) {
+  try {
+    let data = fs.readFileSync(filePath, "utf8");
+
+    const getModsRegex = /getMods\s*\(\)\s*{([\s\S]*?)}/;
+    const readdirSyncRegex = /\.readdirSync\s*\(\s*path\.join\s*\(__dirname\s*,\s*"mods\/"\s*\)/;
+
+    const getModsMatch = data.match(getModsRegex);
+    if (!getModsMatch) return;
+
+    const readdirSyncMatch = getModsMatch[0].match(readdirSyncRegex);
+    if (!readdirSyncMatch) return;
+
+    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}\n            .filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`);
+
+    fs.writeFileSync(filePath, modifiedData, "utf8");
+    return true;
+  } catch (err) {
+    return;
+  }
+}
+
+async function onDidInstallMod(gameId, archiveId, modId, context) {
+  const state = context.api.getState();
+  const installPath = vortex_api.selectors.installPathForGame(state, gameId);
+  const mod = (_b = (_a = state.persistent.mods) === null || _a === void 0 ? void 0 : _a[gameId]) === null || _b === void 0 ? void 0 : _b[modId];
+  if (installPath === undefined || (mod === null || mod === void 0 ? void 0 : mod.installationPath) === undefined) {
+    return;
+  }
+  const modPath = path.join(installPath, mod.installationPath);
+  const mainModPath = findMainModFile(modPath);
+  if (mainModPath) {
+    const success = fixGetMods(mainModPath);
+    if (success) {
+      context.api.sendNotification({
+        id: "fix_success_" + modId,
+        type: "info",
+        title: "Fix Successfull",
+        message: 'Successfully fixed Mod "' + modId + '"',
+      });
+    }
+  }
+}
+
 function applyGame(context, gameSpec) {
   const game = {
     ...gameSpec.game,
@@ -111,6 +228,8 @@ function applyGame(context, gameSpec) {
       { name: type.name }
     );
   });
+
+  context.api.events.on("did-install-mod", async (gameId, archiveId, modId) => onDidInstallMod(gameId, archiveId, modId, context));
 }
 
 function main(context) {
