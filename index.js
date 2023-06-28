@@ -156,7 +156,7 @@ function fixGetMods(filePath) {
     const readdirSyncMatch = getModsMatch[0].match(readdirSyncRegex);
     if (!readdirSyncMatch) return;
 
-    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}).filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex"`);
+    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}).filter((dir) => dir.name !== "__folder_managed_by_vortex"`);
 
     fs.writeFileSync(filePath, modifiedData, "utf8");
     return true;
