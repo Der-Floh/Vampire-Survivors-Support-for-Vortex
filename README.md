@@ -7,9 +7,29 @@ This extension adds support for Vampire Survivors to [Vortex Mod Manager﻿](htt
 ### At this time following mod types are supported:
 - Mods that are designed for the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) by Kekos and use the right file structure (e.g resources/app/.webpack/.../img.jpg)
 - Other Mods that use the right file structure (e.g resources/app/.webpack/.../img.jpg)
+- Mods for the New Engine that use the right file structure (e.g Mods/mod.dll)
 
 Note that mods that change the same file and **DON'T** use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) will **NOT WORK**.
+Note that mods for the New Engine have to be made for [MelonLoader](https://github.com/LavaGang/MelonLoader/releases)
+
 Mods that only contain the file to change also won't work.
+
+## Currently Supported Mods
+### Old Engine:
+- VS ModLoader
+- Multiperpose QoL Mod
+- Castlevania Survivors
+- Extendend Power Up Levels
+- Eggs Bulk Buy
+- Movement Speed Cap
+- Tekken 3 Chicken Sound Effect﻿ (NO ModLoader)
+- Exorcismus - Unholy Vespers Skin Mod﻿ (NO ModLoader)
+- Remove Cat Sounds﻿ (NO ModLoader)
+- Forest A audio to Brodyquest﻿ (NO ModLoader)
+- Better Lama Armor﻿ (NO ModLoader)
+
+### New Engine:
+- No Mods Supported at the moment
 
 ## How to install
 
@@ -21,7 +41,7 @@ Afterwards, restart Vortex and you can begin installing supported Vampire Surviv
 
 ## Known Issues
 
-### Black Screen:
+### Old Engine Black Screen:
 If you encounter a black screen this is most likely because of 2 reasons.
 1. You enabled the VS ModLoader but no other mod. If the VS ModLoader is enabled alone it causes a black screen.
 2. You're using one of Kekos mods which have some issues with Vortex files because they try to load Vortex files as mods. These issues could also occur on other mods. To fix this you just need to add the following line into the main mod file (typically called `[modname].js`):
@@ -36,6 +56,7 @@ If you encounter a black screen this is most likely because of 2 reasons.
 
 ## How to make my Mod compatible with this Extension
 
+### Old Engine:
 To make your mod compatible you either need to make your mod compatible with the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64), or you use the right file structure for your mod. Note though that if you do the latter, mods that try to change the same file will overwrite yours, so it is recommended to use the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64).
 
 Vampire Survivors is structured like this (most basic representation):
@@ -58,13 +79,46 @@ Vampire Survivors is structured like this (most basic representation):
 ```
 
 So if you use the VS ModLoader your file structure always looks like this:
-﻿`resources/app/.webpack/renderer/mod_loaders/mods/[your mod name]`
+```
+|--> resources
+  |--> app
+﻿﻿    |--> .webpack
+﻿﻿﻿      |--> renderer
+﻿﻿﻿﻿        |--> mod_loader
+﻿﻿﻿﻿﻿          |--> mods
+﻿﻿﻿﻿﻿﻿            |--> [your mod]
+```
 
 If you don't use the VS ModLoader your file structure can vary but should always contain every folder before your file until resources is reached. An example for the UI.png file:
-﻿`resources/app/.webpack/renderer/assets/img/UI.png`
+```
+|--> resources
+﻿  |--> app
+﻿﻿    |--> .webpack
+﻿﻿﻿      |--> renderer
+﻿﻿﻿﻿        |--> assets
+﻿﻿﻿﻿﻿          |--> img
+﻿﻿﻿﻿﻿﻿            |--> UI.png
+```
 
- Note that the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64)
- only works if another mod is actually active / installed
+Note that the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) only works if another mod is actually active / installed
+
+### New Engine
+For the New Engine
+To make your mod compatible your mod needs to be created for the MelonLoader. If that is the case you just need the right file structure for your mod. All Modfiles go into the Mods folder of MelonLoader. If you access other files within your Mod note that this Extension just copies everything as it is. So a file in `Mods/mod.dll` will be copied to `Mods/mod.dll`. Most of the time you want your files to be in the Mods folder if that is the case your file structure would look like this:
+```
+|--> Mods
+﻿  |--> mod1.dll
+﻿  |--> mod2.dll
+```
+
+If you have a file for example a font that needs to go in the UserData folder it would look like this;
+```
+|--> Mods
+﻿  |--> mod1.dll
+﻿  |--> mod2.dll
+|--> UserData
+  |--> font.ttf
+```
 
 <br/>
 
