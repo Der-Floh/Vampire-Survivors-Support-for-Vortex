@@ -10,6 +10,7 @@ const melon_loader = "https://github.com/LavaGang/MelonLoader/releases";
 
 let IS_NEW_ENGINE;
 let CONTEXT_API;
+let DISCOVERY_PATH;
 
 const winapi = require("winapi-bindings");
 const { fs, util, log } = require("vortex-api");
@@ -54,8 +55,9 @@ function findGame() {
 }
 
 async function prepareForModding(discovery) {
+  DISCOVERY_PATH = discovery;
   const modloaderpath = path.join(discovery.path, "resources", "app", ".webpack", "renderer", "mod_loader");
-  const isNew = await isNewEngine(discovery);
+  let isNew = await isNewEngine(discovery);
   log("info", `Is New Engine: "${isNew}"`);
   if (isNew) {
     return fs.ensureDirWritableAsync(path.join(discovery.path, "MelonLoader")).then(() => checkForMelonLoader(path.join(discovery.path, "MelonLoader", "MelonLoader.xml")));
@@ -65,12 +67,9 @@ async function prepareForModding(discovery) {
 }
 
 async function isNewEngine(discovery) {
-  const isNew = await fs
-    .statAsync(path.join(discovery.path, "UnityCrashHandler64.exe"))
-    .then(() => {
+  let isNew = await fs.statAsync(path.join(discovery.path, "UnityCrashHandler64.exe")).then(() => {
       return true;
-    })
-    .catch(() => {
+    }).catch(() => {
       return false;
     });
   IS_NEW_ENGINE = isNew;
@@ -112,6 +111,7 @@ function checkForMelonLoader(melonloaderpath) {
 }
 
 async function testSupportedContentOldEngine(files, gameId, modPath) {
+  await isNewEngine(DISCOVERY_PATH);
   const supported = gameId === GAME_ID && files.some((file) => path.extname(file).toLowerCase() === OLD_MOD_EXT);
   if (supported && IS_NEW_ENGINE) {
     CONTEXT_API.sendNotification({
@@ -155,6 +155,7 @@ async function installContentOldEngine(files) {
 }*/
 
 async function testSupportedContentNewEngine(files, gameId, modPath) {
+  await isNewEngine(DISCOVERY_PATH);
   const supported = gameId === GAME_ID && files.some((file) => path.extname(file).toLowerCase() === NEW_MOD_EXT);
   if (supported && !IS_NEW_ENGINE) {
     CONTEXT_API.sendNotification({
