@@ -67,6 +67,8 @@ async function prepareForModding(discovery) {
 }
 
 async function isNewEngine(discovery) {
+  if (!discovery || !discovery.path)
+    return;
   let isNew = await fs.statAsync(path.join(discovery.path, "UnityCrashHandler64.exe")).then(() => {
       return true;
     }).catch(() => {
