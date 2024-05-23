@@ -1,7 +1,7 @@
 {
   "source": {
     "include": [
-      "index.js"
+      "./src/index.js"
     ],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(^|\\/|\\\\)_"
@@ -10,15 +10,15 @@
     "destination": "./docs",
     "recurse": false,
     "readme": "./README.md",
-    "package": "./info.json",
+    "package": "./src/info.json",
     "template": "./node_modules/foodoc/template"
   },
   "templates": {
     "systemName": "Vampire Survivors Support",
     "systemSummary": "Vortex modding support for Vampire Survivors",
-    "systemLogo": "gameart-cover.jpg",
+    "systemLogo": "./img/gameart-cover.jpg",
     "inlineNav": true,
-    "favicon": "gameart-cover.jpg",
+    "favicon": "./img/gameart-cover.jpg",
     "systemColor": "#383838",
     "footer": "<a href=\"https://der-floh.github.io/Vampire-Survivors-Support-for-Vortex/global.html\">Vampire Survivors Support Code Documentation</a>"
   },
