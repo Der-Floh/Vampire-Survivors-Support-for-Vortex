@@ -1,8 +1,8 @@
-# Vampire Survivors Support for [Vortex﻿](https://www.nexusmods.com/about/vortex/)
+# Vampire Survivors Support for [Vortex](https://www.nexusmods.com/about/vortex/)
 
 ## Description
 
-This extension adds support for Vampire Survivors to [Vortex Mod Manager﻿](https://www.nexusmods.com/about/vortex/), enabling you to easily automate installation of mods for Vampire Survivors without having to worry about where the files are supposed to go, etc.
+This extension adds support for Vampire Survivors to [Vortex Mod Manager](https://www.nexusmods.com/about/vortex/), enabling you to easily automate installation of mods for Vampire Survivors without having to worry about where the files are supposed to go, etc.
 
 ### At this time following mod types are supported:
 - Mods that are designed for the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) by Kekos and use the right file structure (e.g resources/app/.webpack/.../img.jpg)
@@ -22,11 +22,11 @@ Mods that only contain the file to change also won't work.
 - Extendend Power Up Levels
 - Eggs Bulk Buy
 - Movement Speed Cap
-- Tekken 3 Chicken Sound Effect﻿ (NO ModLoader)
-- Exorcismus - Unholy Vespers Skin Mod﻿ (NO ModLoader)
-- Remove Cat Sounds﻿ (NO ModLoader)
-- Forest A audio to Brodyquest﻿ (NO ModLoader)
-- Better Lama Armor﻿ (NO ModLoader)
+- Tekken 3 Chicken Sound Effect (NO ModLoader)
+- Exorcismus - Unholy Vespers Skin Mod (NO ModLoader)
+- Remove Cat Sounds (NO ModLoader)
+- Forest A audio to Brodyquest (NO ModLoader)
+- Better Lama Armor (NO ModLoader)
 
 ### New Engine:
 - No Mods Supported at the moment
@@ -52,7 +52,7 @@ If you encounter a black screen this is most likely because of 2 reasons.
 
 ![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687611333-1920971107.jpeg)
 ![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687968888-146425820.jpeg)
-﻿For the [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50) the file would be `MultipurposeQolMod.js` and for the [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61) Mod it would be `Castlevania.js`
+For the [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50) the file would be `MultipurposeQolMod.js` and for the [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61) Mod it would be `Castlevania.js`
 
 ## How to make my Mod compatible with this Extension
 
@@ -61,43 +61,43 @@ To make your mod compatible you either need to make your mod compatible with the
 
 Vampire Survivors is structured like this (most basic representation):
 ```
-﻿/Vampire Survivors
+/Vampire Survivors
 |--> VampireSurvivors.exe
   |--> resources
-﻿    |--> app
-﻿﻿      |--> .webpack
-﻿﻿        ﻿|--> renderer
-﻿﻿﻿﻿          |--> index.html
-﻿﻿﻿﻿          |--> main.bundle.js
-          ﻿﻿﻿﻿|--> mod_loader (only if you installed VS ModLoader)
-﻿﻿﻿﻿﻿            |--> mods
-              ﻿﻿﻿﻿﻿﻿|--> your mod
-﻿﻿﻿﻿          |--> assets
-﻿﻿﻿﻿﻿            |--> img
-﻿﻿﻿﻿﻿            |--> sfx
-﻿﻿﻿﻿﻿            |--> tilesets
+    |--> app
+      |--> .webpack
+        |--> renderer
+          |--> index.html
+          |--> main.bundle.js
+          |--> mod_loader (only if you installed VS ModLoader)
+            |--> mods
+              |--> your mod
+          |--> assets
+            |--> img
+            |--> sfx
+            |--> tilesets
 ```
 
 So if you use the VS ModLoader your file structure always looks like this:
 ```
 |--> resources
   |--> app
-﻿﻿    |--> .webpack
-﻿﻿﻿      |--> renderer
-﻿﻿﻿﻿        |--> mod_loader
-﻿﻿﻿﻿﻿          |--> mods
-﻿﻿﻿﻿﻿﻿            |--> [your mod]
+    |--> .webpack
+      |--> renderer
+        |--> mod_loader
+          |--> mods
+            |--> [your mod]
 ```
 
 If you don't use the VS ModLoader your file structure can vary but should always contain every folder before your file until resources is reached. An example for the UI.png file:
 ```
 |--> resources
-﻿  |--> app
-﻿﻿    |--> .webpack
-﻿﻿﻿      |--> renderer
-﻿﻿﻿﻿        |--> assets
-﻿﻿﻿﻿﻿          |--> img
-﻿﻿﻿﻿﻿﻿            |--> UI.png
+  |--> app
+    |--> .webpack
+      |--> renderer
+        |--> assets
+          |--> img
+            |--> UI.png
 ```
 
 Note that the [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64) only works if another mod is actually active / installed
@@ -107,15 +107,15 @@ For the New Engine
 To make your mod compatible your mod needs to be created for the MelonLoader. If that is the case you just need the right file structure for your mod. All Modfiles go into the Mods folder of MelonLoader. If you access other files within your Mod note that this Extension just copies everything as it is. So a file in `Mods/mod.dll` will be copied to `Mods/mod.dll`. Most of the time you want your files to be in the Mods folder if that is the case your file structure would look like this:
 ```
 |--> Mods
-﻿  |--> mod1.dll
-﻿  |--> mod2.dll
+  |--> mod1.dll
+  |--> mod2.dll
 ```
 
 If you have a file for example a font that needs to go in the UserData folder it would look like this;
 ```
 |--> Mods
-﻿  |--> mod1.dll
-﻿  |--> mod2.dll
+  |--> mod1.dll
+  |--> mod2.dll
 |--> UserData
   |--> font.ttf
 ```
