@@ -13,6 +13,15 @@
     "package": "./info.json",
     "template": "./node_modules/foodoc/template"
   },
+  "templates": {
+    "systemName": "Vampire Survivors Support",
+    "systemSummary": "Vortex modding support for Vampire Survivors",
+    "systemLogo": "gameart-cover.jpg",
+    "inlineNav": true,
+    "favicon": "gameart-cover.jpg",
+    "systemColor": "#383838",
+    "footer": "<a href=\"https://der-floh.github.io/Vampire-Survivors-Support-for-Vortex/global.html\">Vampire Survivors Support Code Documentation</a>"
+  },
   "plugins": [
     "plugins/markdown"
   ]

@@ -1,3 +1,5 @@
+[![Vampire Survivors Support Code Documentation](https://img.shields.io/badge/Vampire_Survivors_Support-Code_Documentation-green.svg)](https://der-floh.github.io/Vampire-Survivors-Support-for-Vortex/global.html)
+
 # Vampire Survivors Support for [Vortex](https://www.nexusmods.com/about/vortex/)
 
 ## Description

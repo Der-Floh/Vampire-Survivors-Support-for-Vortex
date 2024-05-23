@@ -32,10 +32,11 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install Dependencies
-        run: |
-          npm install -g jsdoc@3.6.11
-          npm install foodoc
+      - name: Install JSDoc
+        run: npm install -g jsdoc@3.6.11
+
+      - name: Install FooDoc
+        run: npm install foodoc
 
       - name: Generate Documentation
         run: jsdoc -c jsdoc.json
