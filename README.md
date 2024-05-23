@@ -46,13 +46,12 @@ Afterwards, restart Vortex and you can begin installing supported Vampire Surviv
 ### Old Engine Black Screen:
 If you encounter a black screen this is most likely because of 2 reasons.
 1. You enabled the VS ModLoader but no other mod. If the VS ModLoader is enabled alone it causes a black screen.
-#### UPDATE: This now gets fixed automatically by the Extension uppon installing the Mod
 2. You're using one of Kekos mods which have some issues with Vortex files because they try to load Vortex files as mods. These issues could also occur on other mods. To fix this you just need to add the following line into the main mod file (typically called `[modname].js`):
-
+#### UPDATE: This now gets fixed automatically by the Extension uppon installing the Mod
 `.filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`
 
-![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716495265-1845671882.png)
-![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716495272-841190642.png)
+![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716496297-2102395392.png)
+![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716496305-305732697.png)
 For the [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50) the file would be `MultipurposeQolMod.js` and for the [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61) Mod it would be `Castlevania.js`
 
 ## How to make my Mod compatible with this Extension
