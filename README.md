@@ -18,20 +18,21 @@ Mods that only contain the file to change also won't work.
 
 ## Currently Supported Mods
 ### Old Engine:
-- VS ModLoader
-- Multiperpose QoL Mod
-- Castlevania Survivors
-- Extendend Power Up Levels
-- Eggs Bulk Buy
-- Movement Speed Cap
-- Tekken 3 Chicken Sound Effect (NO ModLoader)
-- Exorcismus - Unholy Vespers Skin Mod (NO ModLoader)
-- Remove Cat Sounds (NO ModLoader)
-- Forest A audio to Brodyquest (NO ModLoader)
-- Better Lama Armor (NO ModLoader)
+- [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64)
+- [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50)
+- [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61)
+- [Extendend Power Up Levels](https://www.nexusmods.com/vampiresurvivors/mods/60)
+- [Eggs Bulk Buy](https://www.nexusmods.com/vampiresurvivors/mods/63)
+- [Movement Speed Cap](https://www.nexusmods.com/vampiresurvivors/mods/65)
+- [Tekken 3 Chicken Sound Effect (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/53)
+- [Exorcismus - Unholy Vespers Skin Mod (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/17)
+- [Remove Cat Sounds (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/19)
+- [Forest A audio to Brodyquest (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/58)
+- [Better Lama Armor (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/80)
 
 ### New Engine:
-- No Mods Supported at the moment
+- [VSTweaks (New Engine)](https://www.nexusmods.com/vampiresurvivors/mods/87)
+- [Ultra-Wide Fix (NewEngine)](https://www.nexusmods.com/vampiresurvivors/mods/79)
 
 ## How to install
 
