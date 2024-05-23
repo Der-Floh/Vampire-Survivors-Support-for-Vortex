@@ -52,8 +52,8 @@ If you encounter a black screen this is most likely because of 2 reasons.
 
 `.filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`
 
-![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687611333-1920971107.jpeg)
-![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1687968888-146425820.jpeg)
+![Kekos-Mod-Error-Previous](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716495265-1845671882.png)
+![Kekos-Mod-Error-After](https://staticdelivery.nexusmods.com/mods/2295/images/593/593-1716495272-841190642.png)
 For the [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50) the file would be `MultipurposeQolMod.js` and for the [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61) Mod it would be `Castlevania.js`
 
 ## How to make my Mod compatible with this Extension
