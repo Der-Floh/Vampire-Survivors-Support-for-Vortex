@@ -46,9 +46,8 @@ Afterwards, restart Vortex and you can begin installing supported Vampire Surviv
 ### Old Engine Black Screen:
 If you encounter a black screen this is most likely because of 2 reasons.
 1. You enabled the VS ModLoader but no other mod. If the VS ModLoader is enabled alone it causes a black screen.
+#### UPDATE: This now gets fixed automatically by the Extension uppon installing the Mod
 2. You're using one of Kekos mods which have some issues with Vortex files because they try to load Vortex files as mods. These issues could also occur on other mods. To fix this you just need to add the following line into the main mod file (typically called `[modname].js`):
-
-### UPDATE: This now gets fixed automatically by the Extension uppon installing the Mod
 
 `.filter((dir) => dir.isFile() && dir.name !== "__folder_managed_by_vortex")`
 
