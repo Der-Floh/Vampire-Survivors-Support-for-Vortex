@@ -35,7 +35,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install -g jsdoc
-          npm install foo-doc
+          npm install foodoc
 
       - name: Generate Documentation
         run: jsdoc -c jsdoc.json
