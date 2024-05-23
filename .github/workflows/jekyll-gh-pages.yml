@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '14'
 
-     - name: Install Dependencies
+      - name: Install Dependencies
         run: |
           npm install -g jsdoc
           npm install foo-doc
