@@ -8,6 +8,12 @@
   },
   "opts": {
     "destination": "./docs",
-    "recurse": false
-  }
+    "recurse": false,
+    "readme": "./README.md",
+    "package": "./info.json",
+    "template": "./node_modules/foo-doc"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ]
 }

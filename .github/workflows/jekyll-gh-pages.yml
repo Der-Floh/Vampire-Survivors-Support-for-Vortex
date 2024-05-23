@@ -32,8 +32,10 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install JSDoc
-        run: npm install -g jsdoc
+     - name: Install Dependencies
+        run: |
+          npm install -g jsdoc
+          npm install foo-doc
 
       - name: Generate Documentation
         run: jsdoc -c jsdoc.json
