@@ -24,11 +24,12 @@ Mods that only contain the file to change also won't work.
 - [Extendend Power Up Levels](https://www.nexusmods.com/vampiresurvivors/mods/60)
 - [Eggs Bulk Buy](https://www.nexusmods.com/vampiresurvivors/mods/63)
 - [Movement Speed Cap](https://www.nexusmods.com/vampiresurvivors/mods/65)
-- [Tekken 3 Chicken Sound Effect (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/53)
-- [Exorcismus - Unholy Vespers Skin Mod (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/17)
-- [Remove Cat Sounds (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/19)
-- [Forest A audio to Brodyquest (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/58)
-- [Better Lama Armor (NO ModLoader)](https://www.nexusmods.com/vampiresurvivors/mods/80)
+- [Tekken 3 Chicken Sound Effect](https://www.nexusmods.com/vampiresurvivors/mods/53) (NO ModLoader)
+- [Exorcismus - Unholy Vespers Skin Mod](https://www.nexusmods.com/vampiresurvivors/mods/17) (NO ModLoader)
+- [Remove Cat Sounds](https://www.nexusmods.com/vampiresurvivors/mods/19) (NO ModLoader)
+- [Forest A audio to Brodyquest](https://www.nexusmods.com/vampiresurvivors/mods/58) (NO ModLoader)
+- [Better Lama Armor](https://www.nexusmods.com/vampiresurvivors/mods/80) (NO ModLoader)
+- [Chinese developer tools](https://www.nexusmods.com/vampiresurvivors/mods/16) (NO ModLoader)
 
 ### New Engine:
 - [VSTweaks (New Engine)](https://www.nexusmods.com/vampiresurvivors/mods/87)
