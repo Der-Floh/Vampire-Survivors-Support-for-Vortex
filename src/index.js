@@ -1,20 +1,20 @@
-const GAME_ID = "vampiresurvivors";
-const GAME_NAME = "Vampire Survivors";
-const GAME_EXE = "VampireSurvivors.exe";
-const STEAM_APP_ID = "1794680";
-const MOD_LOADER_URL = "https://www.nexusmods.com/vampiresurvivors/mods/64";
-const MELON_LOADER_URL = "https://github.com/LavaGang/MelonLoader/releases";
+const GAME_ID = 'vampiresurvivors';
+const GAME_NAME = 'Vampire Survivors';
+const GAME_EXE = 'VampireSurvivors.exe';
+const STEAM_APP_ID = '1794680';
+const MOD_LOADER_URL = 'https://www.nexusmods.com/vampiresurvivors/mods/64';
+const MELON_LOADER_URL = 'https://github.com/LavaGang/MelonLoader/releases';
 
-const NEW_EXTS = [{ extension: ".dll", destination: "Mods" }, { extension: ".ttf", destination: "UserData" }, { extension: ".json", destination: "UserData" }, { extension: ".xml", destination: "UserData" }, { extension: ".cfg", destination: "UserData" }];
-const OLD_EXTS = [{ extension: ".js", destination: "" }];
+const NEW_EXTS = [{ extension: '.dll', destination: 'Mods' }, { extension: '.ttf', destination: 'UserData' }, { extension: '.json', destination: 'UserData' }, { extension: '.xml', destination: 'UserData' }, { extension: '.cfg', destination: 'UserData' }];
+const OLD_EXTS = [{ extension: '.js', destination: '' }];
 
 let CONTEXT_API;
 let DISCOVERY_PATH;
 
-const winapi = require("winapi-bindings");
-const { fs, util, log } = require("vortex-api");
-const vortex_api = require("vortex-api");
-const path = require("path");
+const winapi = require('winapi-bindings');
+const { fs, util, log } = require('vortex-api');
+const vortex_api = require('vortex-api');
+const path = require('path');
 
 /**
  * Registers the game with the provided context.
@@ -27,8 +27,8 @@ function registerGame(context) {
     name: GAME_NAME,
     mergeMods: true,
     queryPath: findGame,
-    queryModPath: () => "",
-    logo: "gameart.jpg",
+    queryModPath: () => '',
+    logo: 'gameart.jpg',
     executable: () => GAME_EXE,
     requiredFiles: [GAME_EXE],
     setup: prepareForModding,
@@ -43,8 +43,8 @@ function registerGame(context) {
  * @param {Object} context - The context object.
  */
 function registerInstallers(context) {
-  context.registerInstaller("vampiresurvivors-oldengine-mod", 25, testSupportedContentOldEngine, installContentOldEngine);
-  context.registerInstaller("vampiresurvivors-newengine-mod", 25, testSupportedContentNewEngine, installContentNewEngine);
+  context.registerInstaller('vampiresurvivors-oldengine-mod', 25, testSupportedContentOldEngine, installContentOldEngine);
+  context.registerInstaller('vampiresurvivors-newengine-mod', 25, testSupportedContentNewEngine, installContentNewEngine);
 }
 
 /**
@@ -54,7 +54,7 @@ function registerInstallers(context) {
  */
 function setupEventListeners(context) {
   try {
-    context.api.events.on("did-install-mod", async (gameId, archiveId, modId) => await onDidInstallMod(gameId, archiveId, modId, context));
+    context.api.events.on('did-install-mod', async (gameId, archiveId, modId) => await onDidInstallMod(gameId, archiveId, modId, context));
   } catch { }
 }
 
@@ -81,11 +81,11 @@ async function findGame() {
     const game = await util.steam.findByAppId([STEAM_APP_ID]);
     return game.gamePath;
   } catch {
-    const registryKey = "SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App " + STEAM_APP_ID;
-    const instPath = winapi.RegGetValue("HKEY_LOCAL_MACHINE", registryKey, "InstallLocation");
+    const registryKey = 'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ' + STEAM_APP_ID;
+    const instPath = winapi.RegGetValue('HKEY_LOCAL_MACHINE', registryKey, 'InstallLocation');
     if (!instPath) {
       log('error', `[find-game] game path not found`);
-      throw new Error("Game installation path not found.");
+      throw new Error('Game installation path not found.');
     }
     return instPath.value;
   }
@@ -99,7 +99,7 @@ async function findGame() {
 async function prepareForModding(discovery) {
   DISCOVERY_PATH = discovery;
   const isNewEngine = await checkEngineVersion(discovery);
-  const modLoaderPath = isNewEngine ? path.join(discovery.path, "MelonLoader") : path.join(discovery.path, "resources", "app", ".webpack", "renderer", "mod_loader", "mods");
+  const modLoaderPath = isNewEngine ? path.join(discovery.path, 'MelonLoader') : path.join(discovery.path, 'resources', 'app', '.webpack', 'renderer', 'mod_loader', 'mods');
   return ensureModdingSetup(modLoaderPath, isNewEngine);
 }
 
@@ -109,7 +109,7 @@ async function prepareForModding(discovery) {
  * @returns {Promise<boolean>} - A promise that resolves to true if the engine version is valid, false otherwise.
  */
 async function checkEngineVersion(discovery) {
-  const enginePath = path.join(discovery.path, "UnityCrashHandler64.exe");
+  const enginePath = path.join(discovery.path, 'UnityCrashHandler64.exe');
   try {
     await fs.statAsync(enginePath);
     return true;
@@ -143,7 +143,7 @@ async function ensureModdingSetup(modLoaderPath, isNewEngine) {
  * @returns {boolean} - Returns true if VS Mod Loader exists, false otherwise.
  */
 function checkForModLoader(modLoaderPath) {
-  return checkExistence(modLoaderPath, "ModLoader", MOD_LOADER_URL);
+  return checkExistence(modLoaderPath, 'ModLoader', MOD_LOADER_URL);
 }
 
 /**
@@ -152,7 +152,7 @@ function checkForModLoader(modLoaderPath) {
  * @returns {boolean} - Returns true if MelonLoader exists, false otherwise.
  */
 function checkForMelonLoader(melonLoaderPath) {
-  return checkExistence(melonLoaderPath, "MelonLoader", MELON_LOADER_URL);
+  return checkExistence(melonLoaderPath, 'MelonLoader', MELON_LOADER_URL);
 }
 
 /**
@@ -171,7 +171,7 @@ async function checkExistence(path, loaderName, downloadUrl) {
     log('info', `[check-loader] ${loaderName.toLowerCase()}-missing`);
     CONTEXT_API.sendNotification({
       id: `${loaderName.toLowerCase()}-missing`,
-      type: "warning",
+      type: 'warning',
       title: `${loaderName} not found`,
       message: `${loaderName} is necessary for modding. Please install it.`,
       actions: [{ title: `Get ${loaderName}`, action: () => util.opn(downloadUrl).catch(() => undefined) }],
@@ -191,10 +191,10 @@ async function testSupportedContentOldEngine(files, gameId, modPath) {
   const supported = gameId === GAME_ID && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported && isNewEngine) {
     CONTEXT_API.sendNotification({
-      id: "is_new_engine",
-      type: "warning",
+      id: `is_new_engine_${(path.parse(path.basename(modPath)).name).toLowerCase()}`,
+      type: 'warning',
       title: `Old Mod but New Engine [${path.parse(path.basename(modPath)).name}]`,
-      message: "You are trying to install a Mod for the Old Engine on the New Engine",
+      message: 'You are trying to install a Mod for the Old Engine on the New Engine',
     });
   }
   log('info', `[old-e] supported state: ${supported}`);
@@ -213,10 +213,10 @@ async function testSupportedContentNewEngine(files, gameId, modPath) {
   const supported = gameId === GAME_ID && files.some(file => NEW_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported && !isNewEngine) {
     CONTEXT_API.sendNotification({
-      id: "is_new_engine",
-      type: "warning",
+      id: `is_old_engine${(path.parse(path.basename(modPath)).name).toLowerCase()}`,
+      type: 'warning',
       title: `New Mod but Old Engine [${path.parse(path.basename(modPath)).name}]`,
-      message: "You are trying to install a Mod for the new Engine on the Old Engine",
+      message: 'You are trying to install a Mod for the new Engine on the Old Engine',
     });
   }
   log('info', `[new-e] supported state: ${supported}`);
@@ -245,7 +245,9 @@ function prepareFilesOldEngine(files) {
   log('info', `[old-e] prepare files:"${files}"`);
 
   for (let file of files) {
-    // file = file.replace(/\\/g, "/");
+    file = file.replace(/\\/g, "/");
+    if (file.endsWith('/'))
+      continue;
     // const extension = path.extname(file).toLowerCase();
     // const matchingConfig = OLD_EXTS.find(config => config.extension === extension);
     // if (matchingConfig) {
@@ -293,7 +295,9 @@ function prepareFilesNewEngine(files) {
   }
 
   for (let file of files) {
-    file = file.replace(/\\/g, "/");
+    file = file.replace(/\\/g, '/');
+    if (file.endsWith('/'))
+      continue;
     const dirName = path.dirname(file);
     const extension = path.extname(file).toLowerCase();
     const matchingConfig = NEW_EXTS.find(config => config.extension === extension);
@@ -323,7 +327,7 @@ function prepareFilesNewEngine(files) {
  * @returns {Object} - An object containing the instructions for copying the files.
  */
 async function installContent(files) {
-  log('info', `[install] files:"${files}"`);
+  log('info', `[install] files:"${files.map(file => file.source)}"`);
   const instructions = [];
 
   for (const file of files) {
@@ -348,7 +352,7 @@ async function installContent(files) {
  * @param {string} archiveId - The ID of the mod archive.
  * @param {string} modId - The ID of the mod.
  * @param {Object} context - The context object containing the API and state.
- * @returns {Promise<void>} - A promise that resolves when the function completes.
+ * @returns {Promise} - A promise that resolves when the function completes.
  */
 async function onDidInstallMod(gameId, archiveId, modId, context) {
   const state = context.api.getState();
@@ -358,9 +362,9 @@ async function onDidInstallMod(gameId, archiveId, modId, context) {
     return;
   }
 
-  const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  if (isNewEngine)
-    return;
+  // const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
+  // if (isNewEngine)
+  // return;
 
   log('info', `[old-e] fixing old mod:"${modId}" on path:"${mod.installationPath}"`);
   const mainModPath = findMainModFile(path.join(installPath, mod.installationPath));
@@ -369,12 +373,41 @@ async function onDidInstallMod(gameId, archiveId, modId, context) {
     if (success) {
       log('info', `[old-e] fixed old mod:"${modId}"`);
       context.api.sendNotification({
-        id: "fix_success_" + modId,
-        type: "info",
-        title: "Fixed Mod",
-        message: 'Successfully fixed Mod "' + modId + '"',
+        id: `fix_success_${modId}`,
+        type: 'info',
+        title: 'Fixed Mod',
+        message: `Successfully fixed Mod: "${modId}"`,
       });
     }
+  }
+}
+
+/**
+ * Fixes a mods getMods function by removing the line that makes it fail.
+ * @param {string} filePath - The path to the mods main file.
+ * @returns {boolean} - Whether the fix was successful or not.
+ */
+function fixGetMods(filePath) {
+  try {
+    log('info', `[fix-get-mods] filePath:"${filePath}"`);
+    let data = fs.readFileSync(filePath, "utf8");
+
+    const getModsRegex = /getMods\s*\(\)\s*{([\s\S]*?)}/;
+    const readdirSyncRegex = /"mods\/"\),\s*{\s*withFileTypes:\s*true\s*}/;
+
+    const getModsMatch = data.match(getModsRegex);
+    if (!getModsMatch) return false;
+
+    const readdirSyncMatch = getModsMatch[0].match(readdirSyncRegex);
+    if (!readdirSyncMatch) return false;
+
+    const modifiedData = data.replace(readdirSyncRegex, `${readdirSyncMatch[0]}).filter((dir) => dir.name !== "__folder_managed_by_vortex"`);
+
+    fs.writeFileSync(filePath, modifiedData, "utf8");
+    return true;
+  } catch (err) {
+    log('error', `could not fix mod:"${err}"`);
+    return false;
   }
 }
 
@@ -393,7 +426,7 @@ function findMainModFile(modPath) {
       const stat = fs.statSync(filePath);
       if (stat.isDirectory()) {
         dirname = path.basename(filePath);
-        const fileName = dirname + ".js";
+        const fileName = dirname + '.js';
         const targetFilePath = path.join(filePath, fileName);
         const exists = fs.statSync(targetFilePath, (err, stats) => {
           if (!err && stats.isFile()) {
@@ -428,7 +461,7 @@ function findModsFolder(folderPath) {
       const stats = fs.statSync(filePath);
 
       if (stats.isDirectory()) {
-        if (file === "mods") {
+        if (file === 'mods') {
           return filePath;
         } else {
           const modsFolderPath = findModsFolder(filePath);
