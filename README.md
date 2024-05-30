@@ -42,9 +42,9 @@ Mods that only contain the file to change also won't work.
 - [VSTweaks (New Engine)](https://www.nexusmods.com/vampiresurvivors/mods/87)
 - [Ultra-Wide Fix (NewEngine)](https://www.nexusmods.com/vampiresurvivors/mods/79)
 
-#### For the full List of supported and not supported mods see:
-[Full List for Old Engine]()
-[Full List for New Engine]()
+#### For the full List of supported and not supported Mods see:
+[Full List for Old Engine](https://github.com/Der-Floh/Vampire-Survivors-Support-for-Vortex/blob/main/support-lists/support-list-old-engine.md)
+[Full List for New Engine](https://github.com/Der-Floh/Vampire-Survivors-Support-for-Vortex/blob/main/support-lists/support-list-new-engine.md)
 
 ## How to install
 
