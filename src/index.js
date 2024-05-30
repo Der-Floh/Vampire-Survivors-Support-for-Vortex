@@ -7,6 +7,8 @@ const MELON_LOADER_URL = 'https://github.com/LavaGang/MelonLoader/releases';
 
 const NEW_EXTS = [{ extension: '.dll', destination: 'Mods' }, { extension: '.ttf', destination: 'UserData' }, { extension: '.json', destination: 'UserData' }, { extension: '.xml', destination: 'UserData' }, { extension: '.cfg', destination: 'UserData' }];
 const OLD_EXTS = [{ extension: '.js', destination: '' }];
+const OLD_HIER_LOADER = 'resources/app/.webpack/renderer/mod_loader/mods';
+const OLD_HIER_BASE = 'resources/app/.webpack/renderer/assets';
 
 let CONTEXT_API;
 let DISCOVERY_PATH;
@@ -188,7 +190,9 @@ async function checkExistence(path, loaderName, downloadUrl) {
  */
 async function testSupportedContentOldEngine(files, gameId, modPath) {
   const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  const supported = gameId === GAME_ID && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  let supported = gameId === GAME_ID && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  if (supported === false && files.some(file => file.replaceAll('\\', '/').includes('renderer/') || file.replaceAll('\\', '/').includes('assets/')))
+    supported = true;
   if (supported && isNewEngine) {
     CONTEXT_API.sendNotification({
       id: `is_new_engine_${(path.parse(path.basename(modPath)).name).toLowerCase()}`,
@@ -244,14 +248,36 @@ function prepareFilesOldEngine(files) {
   const preparedFiles = [];
   log('info', `[old-e] prepare files:"${files}"`);
 
+  const hierComponentsLoader = OLD_HIER_LOADER.split('/');
+  const hierComponentsBase = OLD_HIER_BASE.split('/');
+  let modPathPre = '';
   for (let file of files) {
-    file = file.replace(/\\/g, "/");
+    file = file.replaceAll('\\', '/');
+    const fileComponents = file.split('/');
+    let hierIndex = hierComponentsLoader.indexOf(fileComponents[0]);
+
+    if (hierIndex === -1) {
+      hierIndex = hierComponentsBase.indexOf(fileComponents[0]);
+      if (hierIndex !== -1) {
+        modPathPre = hierComponentsBase.slice(0, hierIndex).join('/');
+        break;
+      }
+    } else {
+      modPathPre = hierComponentsLoader.slice(0, hierIndex).join('/');
+      break;
+    }
+  }
+  if (modPathPre && modPathPre.length !== 0)
+    modPathPre += '/';
+
+  for (let file of files) {
+    file = file.replaceAll('\\', '/');
     if (file.endsWith('/'))
       continue;
     // const extension = path.extname(file).toLowerCase();
     // const matchingConfig = OLD_EXTS.find(config => config.extension === extension);
     // if (matchingConfig) {
-    preparedFiles.push({ source: file, destination: file });
+    preparedFiles.push({ source: file, destination: `${modPathPre}${file}` });
     // }
   }
 

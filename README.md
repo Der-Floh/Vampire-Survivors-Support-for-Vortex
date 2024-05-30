@@ -18,22 +18,33 @@ Mods that only contain the file to change also won't work.
 
 ## Currently Supported Mods
 ### Old Engine:
-- [VS ModLoader](https://www.nexusmods.com/vampiresurvivors/mods/64)
-- [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50)
-- [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61)
-- [Extendend Power Up Levels](https://www.nexusmods.com/vampiresurvivors/mods/60)
-- [Eggs Bulk Buy](https://www.nexusmods.com/vampiresurvivors/mods/63)
-- [Movement Speed Cap](https://www.nexusmods.com/vampiresurvivors/mods/65)
-- [Tekken 3 Chicken Sound Effect](https://www.nexusmods.com/vampiresurvivors/mods/53) (NO ModLoader)
+- [Equal Power-Ups and Passives (0.5.205)](https://www.nexusmods.com/vampiresurvivors/mods/5) (NO ModLoader)
+- [Custom Content Bundle Pack](https://www.nexusmods.com/vampiresurvivors/mods/11) (NO ModLoader)
+- [Chinese developer tools](https://www.nexusmods.com/vampiresurvivors/mods/16) (NO ModLoader)
 - [Exorcismus - Unholy Vespers Skin Mod](https://www.nexusmods.com/vampiresurvivors/mods/17) (NO ModLoader)
 - [Remove Cat Sounds](https://www.nexusmods.com/vampiresurvivors/mods/19) (NO ModLoader)
+- [The Pokemon Survivors Bundle](https://www.nexusmods.com/vampiresurvivors/mods/37) (NO ModLoader)
+- [QoL tweaks and gameplay changes](https://www.nexusmods.com/vampiresurvivors/mods/39) (NO ModLoader)
+- [Monster Survivors](https://www.nexusmods.com/vampiresurvivors/mods/43) (NO ModLoader)
+- [Tekken 3 Chicken Sound Effect](https://www.nexusmods.com/vampiresurvivors/mods/53) (NO ModLoader)
 - [Forest A audio to Brodyquest](https://www.nexusmods.com/vampiresurvivors/mods/58) (NO ModLoader)
+- [Vampire Survivors Thai Mod](https://www.nexusmods.com/vampiresurvivors/mods/69) (NO ModLoader)
 - [Better Lama Armor](https://www.nexusmods.com/vampiresurvivors/mods/80) (NO ModLoader)
-- [Chinese developer tools](https://www.nexusmods.com/vampiresurvivors/mods/16) (NO ModLoader)
+- [Chicken Good and Leeloo Dallas Multipass](https://www.nexusmods.com/vampiresurvivors/mods/81) (NO ModLoader)
+- [Multiperpose QoL Mod](https://www.nexusmods.com/vampiresurvivors/mods/50)
+- [Extended Power Up Levels](https://www.nexusmods.com/vampiresurvivors/mods/60)
+- [Castlevania Survivors](https://www.nexusmods.com/vampiresurvivors/mods/61)
+- [Eggs Bulk Buy](https://www.nexusmods.com/vampiresurvivors/mods/63)
+- [VS Mod Loader](https://www.nexusmods.com/vampiresurvivors/mods/64)
+- [Movement Speed Cap](https://www.nexusmods.com/vampiresurvivors/mods/65)
 
 ### New Engine:
 - [VSTweaks (New Engine)](https://www.nexusmods.com/vampiresurvivors/mods/87)
 - [Ultra-Wide Fix (NewEngine)](https://www.nexusmods.com/vampiresurvivors/mods/79)
+
+#### For the full List of supported and not supported mods see:
+[Full List for Old Engine]()
+[Full List for New Engine]()
 
 ## How to install
 
