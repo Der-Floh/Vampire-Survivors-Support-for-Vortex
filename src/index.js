@@ -1,22 +1,47 @@
-const GAME_ID = 'vampiresurvivors';
-const GAME_NAME = 'Vampire Survivors';
-const GAME_EXE = 'VampireSurvivors.exe';
-const STEAM_APP_ID = '1794680';
-const MOD_LOADER_URL = 'https://www.nexusmods.com/vampiresurvivors/mods/64';
-const MELON_LOADER_URL = 'https://github.com/LavaGang/MelonLoader/releases';
-
-const NEW_EXTS = [{ extension: '.dll', destination: 'Mods' }, { extension: '.ttf', destination: 'UserData' }, { extension: '.json', destination: 'UserData' }, { extension: '.xml', destination: 'UserData' }, { extension: '.cfg', destination: 'UserData' }];
-const OLD_EXTS = [{ extension: '.js', destination: '' }];
-const OLD_HIER_LOADER = 'resources/app/.webpack/renderer/mod_loader/mods';
-const OLD_HIER_BASE = 'resources/app/.webpack/renderer/assets';
-
-let CONTEXT_API;
-let DISCOVERY_PATH;
-
 const winapi = require('winapi-bindings');
 const { fs, util, log } = require('vortex-api');
 const vortex_api = require('vortex-api');
 const path = require('path');
+
+const GAME = {
+  id: 'vampiresurvivors',
+  name: 'Vampire Survivors',
+  logo: 'gameart.jpg',
+  exe: 'VampireSurvivors.exe',
+  steamId: '1794680'
+};
+
+const VS_MOD_LOADER = {
+  name: 'VS Mod Loader',
+  url: 'https://www.nexusmods.com/vampiresurvivors/mods/64',
+  path: 'resources/app/.webpack/renderer/mod_loader',
+  mainFile: 'index.js'
+};
+const MELON_LOADER = {
+  name: 'MelonLoader',
+  url: 'https://github.com/LavaGang/MelonLoader/releases/latest',
+  path: 'MelonLoader',
+  mainFile: 'MelonLoader.xml'
+};
+
+const NEW_EXTS = [
+  { extension: '.dll', destination: 'Mods' },
+  { extension: '.ttf', destination: 'UserData' },
+  { extension: '.json', destination: 'UserData' },
+  { extension: '.xml', destination: 'UserData' },
+  { extension: '.cfg', destination: 'UserData' }
+];
+const OLD_EXTS = [
+  { extension: '.js', destination: '' }
+];
+const OLD_HIER = [
+  'resources/app/.webpack/renderer/mod_loader/mods',
+  'resources/app/.webpack/renderer/assets',
+  'resources/app/.webpack/renderer/main.bundle.js'
+];
+
+let CONTEXT_API;
+let DISCOVERY_PATH;
 
 /**
  * Registers the game with the provided context.
@@ -25,17 +50,17 @@ const path = require('path');
 function registerGame(context) {
   CONTEXT_API = context.api;
   context.registerGame({
-    id: GAME_ID,
-    name: GAME_NAME,
+    id: GAME.id,
+    name: GAME.name,
     mergeMods: true,
     queryPath: findGame,
     queryModPath: () => '',
-    logo: 'gameart.jpg',
-    executable: () => GAME_EXE,
-    requiredFiles: [GAME_EXE],
+    logo: GAME.logo,
+    executable: () => GAME.exe,
+    requiredFiles: [GAME.exe],
     setup: prepareForModding,
-    environment: { SteamAPPId: STEAM_APP_ID },
-    details: { steamAppId: STEAM_APP_ID },
+    environment: { SteamAPPId: GAME.steamId },
+    details: { steamAppId: GAME.steamId },
   });
 }
 
@@ -80,10 +105,10 @@ function main(context) {
  */
 async function findGame() {
   try {
-    const game = await util.steam.findByAppId([STEAM_APP_ID]);
+    const game = await util.steam.findByAppId([GAME.steamId]);
     return game.gamePath;
   } catch {
-    const registryKey = 'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ' + STEAM_APP_ID;
+    const registryKey = 'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Steam App ' + GAME.steamId;
     const instPath = winapi.RegGetValue('HKEY_LOCAL_MACHINE', registryKey, 'InstallLocation');
     if (!instPath) {
       log('error', `[find-game] game path not found`);
@@ -101,8 +126,7 @@ async function findGame() {
 async function prepareForModding(discovery) {
   DISCOVERY_PATH = discovery;
   const isNewEngine = await checkEngineVersion(discovery);
-  const modLoaderPath = isNewEngine ? path.join(discovery.path, 'MelonLoader') : path.join(discovery.path, 'resources', 'app', '.webpack', 'renderer', 'mod_loader', 'mods');
-  return ensureModdingSetup(modLoaderPath, isNewEngine);
+  return await ensureModdingSetup(discovery, isNewEngine);
 }
 
 /**
@@ -124,15 +148,14 @@ async function checkEngineVersion(discovery) {
  * Ensures the modding setup by checking for the existence of a mod loader path.
  * If the mod loader path exists, it checks for either MelonLoader or ModLoader based on the engine version.
  * 
- * @param {string} modLoaderPath - The path to the mod loader.
+ * @param {Object} discovery - The discovery object containing the path to check.
  * @param {boolean} isNewEngine - Indicates whether the engine version is new or not.
  * @returns {Promise} - A promise that resolves with the result of the mod loader check.
  * @throws {Error} - If there is an error during the modding setup.
  */
-async function ensureModdingSetup(modLoaderPath, isNewEngine) {
+async function ensureModdingSetup(discovery, isNewEngine) {
   try {
-    await fs.ensureDirWritableAsync(modLoaderPath);
-    return isNewEngine ? checkForMelonLoader(modLoaderPath) : checkForModLoader(modLoaderPath);
+    return isNewEngine ? checkForMelonLoader(discovery) : checkForVSModLoader(discovery);
   } catch (error) {
     log('error', '[mod-setup] failed to ensure modding setup:', error);
     throw error;
@@ -141,43 +164,49 @@ async function ensureModdingSetup(modLoaderPath, isNewEngine) {
 
 /**
  * Checks for the existence of the VS Mod Loader.
- * @param {string} modLoaderPath - The path to the mod loader.
+ * @param {Object} discovery - The discovery object containing the path to check.
  * @returns {boolean} - Returns true if VS Mod Loader exists, false otherwise.
  */
-function checkForModLoader(modLoaderPath) {
-  return checkExistence(modLoaderPath, 'ModLoader', MOD_LOADER_URL);
+async function checkForVSModLoader(discovery) {
+  try {
+    await fs.ensureDirWritableAsync(path.join(discovery.path, VS_MOD_LOADER.path));
+    await fs.statAsync(path.join(discovery.path, VS_MOD_LOADER.path, VS_MOD_LOADER.mainFile));
+    return true;
+  } catch {
+    const vsModLoaderNameId = VS_MOD_LOADER.name.replaceAll(' ', '').toLowerCase();
+    log('info', `[check-loader] ${vsModLoaderNameId}-missing`);
+    CONTEXT_API.sendNotification({
+      id: `${vsModLoaderNameId}-missing`,
+      type: 'warning',
+      title: `${VS_MOD_LOADER.name} not found`,
+      message: `${VS_MOD_LOADER.name} is recommended for modding. When not installed only one Mod at a time can be loaded.`,
+      actions: [{ title: `Get ${VS_MOD_LOADER.name}`, action: () => util.opn(VS_MOD_LOADER.url).catch(() => undefined) }],
+    });
+    return false;
+  }
 }
 
 /**
  * Checks for the existence of MelonLoader.
- * @param {string} melonLoaderPath - The path to the MelonLoader.
+ * @param {Object} discovery - The discovery object containing the path to check.
  * @returns {boolean} - Returns true if MelonLoader exists, false otherwise.
  */
-function checkForMelonLoader(melonLoaderPath) {
-  return checkExistence(melonLoaderPath, 'MelonLoader', MELON_LOADER_URL);
-}
-
-/**
- * Checks the existence of a loader at the specified path.
- * If the loader does not exist, it logs an info message and sends a notification.
- *
- * @param {string} path - The path to the loader.
- * @param {string} loaderName - The name of the loader.
- * @param {string} downloadUrl - The URL to download the loader.
- * @returns {Promise<void>} - A promise that resolves when the existence check is complete.
- */
-async function checkExistence(path, loaderName, downloadUrl) {
+async function checkForMelonLoader(discovery) {
   try {
-    await fs.statAsync(path);
+    await fs.ensureDirWritableAsync(path.join(discovery.path, MELON_LOADER.path));
+    await fs.statAsync(path.join(discovery.path, MELON_LOADER.path, MELON_LOADER.mainFile));
+    return true;
   } catch {
-    log('info', `[check-loader] ${loaderName.toLowerCase()}-missing`);
+    const melonLoaderNameId = MELON_LOADER.name.replaceAll(' ', '').toLowerCase();
+    log('info', `[check-loader] ${melonLoaderNameId}-missing`);
     CONTEXT_API.sendNotification({
-      id: `${loaderName.toLowerCase()}-missing`,
+      id: `${melonLoaderNameId}-missing`,
       type: 'warning',
-      title: `${loaderName} not found`,
-      message: `${loaderName} is necessary for modding. Please install it.`,
-      actions: [{ title: `Get ${loaderName}`, action: () => util.opn(downloadUrl).catch(() => undefined) }],
+      title: `${MELON_LOADER.name} not found`,
+      message: `${MELON_LOADER.name} is necessary for modding. Please install it.`,
+      actions: [{ title: `Get ${MELON_LOADER.name}`, action: () => util.opn(MELON_LOADER.url).catch(() => undefined) }],
     });
+    return false;
   }
 }
 
@@ -190,7 +219,7 @@ async function checkExistence(path, loaderName, downloadUrl) {
  */
 async function testSupportedContentOldEngine(files, gameId, modPath) {
   const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  let supported = gameId === GAME_ID && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  let supported = gameId === GAME.id && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported === false && files.some(file => file.replaceAll('\\', '/').includes('renderer/') || file.replaceAll('\\', '/').includes('assets/')))
     supported = true;
   if (supported && isNewEngine) {
@@ -214,7 +243,7 @@ async function testSupportedContentOldEngine(files, gameId, modPath) {
  */
 async function testSupportedContentNewEngine(files, gameId, modPath) {
   const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  const supported = gameId === GAME_ID && files.some(file => NEW_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  const supported = gameId === GAME.id && files.some(file => NEW_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported && !isNewEngine) {
     CONTEXT_API.sendNotification({
       id: `is_old_engine${(path.parse(path.basename(modPath)).name).toLowerCase()}`,
@@ -248,32 +277,30 @@ function prepareFilesOldEngine(files) {
   const preparedFiles = [];
   log('info', `[old-e] prepare files:"${files}"`);
 
-  const hierComponentsLoader = OLD_HIER_LOADER.split('/');
-  const hierComponentsBase = OLD_HIER_BASE.split('/');
   let modPathPre = '';
   for (let file of files) {
     file = file.replaceAll('\\', '/');
     const fileComponents = file.split('/');
-    let hierIndex = hierComponentsLoader.indexOf(fileComponents[0]);
 
-    if (hierIndex === -1) {
-      hierIndex = hierComponentsBase.indexOf(fileComponents[0]);
+    for (const hierPath of OLD_HIER) {
+      const hierComponents = hierPath.split('/');
+      const hierIndex = hierComponents.indexOf(fileComponents[0]);
+
       if (hierIndex !== -1) {
-        modPathPre = hierComponentsBase.slice(0, hierIndex).join('/');
+        modPathPre = hierComponents.slice(0, hierIndex).join('/');
         break;
       }
-    } else {
-      modPathPre = hierComponentsLoader.slice(0, hierIndex).join('/');
+    }
+
+    if (modPathPre && modPathPre.length !== 0) {
+      modPathPre += '/';
       break;
     }
   }
-  if (modPathPre && modPathPre.length !== 0)
-    modPathPre += '/';
 
   for (let file of files) {
     file = file.replaceAll('\\', '/');
-    if (file.endsWith('/'))
-      continue;
+    if (file.endsWith('/')) continue;
     // const extension = path.extname(file).toLowerCase();
     // const matchingConfig = OLD_EXTS.find(config => config.extension === extension);
     // if (matchingConfig) {
