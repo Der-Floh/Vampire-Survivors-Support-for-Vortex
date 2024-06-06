@@ -45,7 +45,7 @@ let DISCOVERY_PATH;
 
 /**
  * Registers the game with the provided context.
- * @param {Object} context - The context object.
+ * @param {Object} context - The modding context object.
  */
 function registerGame(context) {
   CONTEXT_API = context.api;
@@ -65,9 +65,8 @@ function registerGame(context) {
 }
 
 /**
- * Registers installers for the Vampire Survivors Support module.
- * 
- * @param {Object} context - The context object.
+ * Registers the installers for the module.
+ * @param {Object} context - The modding context object.
  */
 function registerInstallers(context) {
   context.registerInstaller('vampiresurvivors-oldengine-mod', 25, testSupportedContentOldEngine, installContentOldEngine);
@@ -75,9 +74,8 @@ function registerInstallers(context) {
 }
 
 /**
- * Sets up event listeners for the application.
- *
- * @param {Object} context - The context object.
+ * Sets up event listeners for the module.
+ * @param {Object} context - The modding context object.
  */
 function setupEventListeners(context) {
   try {
@@ -86,9 +84,8 @@ function setupEventListeners(context) {
 }
 
 /**
- * The main function of the application.
- * 
- * @param {Object} context - The application context.
+ * The main function of the module.
+ * @param {Object} context - The modding context object.
  * @returns {boolean} - Returns true if the function executed successfully.
  */
 function main(context) {
@@ -119,9 +116,9 @@ async function findGame() {
 }
 
 /**
- * Prepares for modding by setting the DISCOVERY_PATH and checking the engine version.
- * @param {string} discovery - The discovery path.
- * @returns {Promise} A promise that resolves when the modding setup is ensured.
+ * Prepares for modding by setting the global discovery path and checking the engine version.
+ * @param {Object} discovery - The game discovery object.
+ * @returns {Promise<boolean>} A promise that resolves true if the modding setup is ensured successfully.
  */
 async function prepareForModding(discovery) {
   DISCOVERY_PATH = discovery;
@@ -131,8 +128,8 @@ async function prepareForModding(discovery) {
 
 /**
  * Checks the engine version by verifying the existence of UnityCrashHandler64.exe file.
- * @param {Object} discovery - The discovery object containing the path to check.
- * @returns {Promise<boolean>} - A promise that resolves to true if the engine version is valid, false otherwise.
+ * @param {Object} discovery - The game discovery object containing the path to check.
+ * @returns {Promise<boolean>} - A promise that resolves true if the engine version is valid, false otherwise.
  */
 async function checkEngineVersion(discovery) {
   const enginePath = path.join(discovery.path, 'UnityCrashHandler64.exe');
@@ -145,12 +142,11 @@ async function checkEngineVersion(discovery) {
 }
 
 /**
- * Ensures the modding setup by checking for the existence of a mod loader path.
- * If the mod loader path exists, it checks for either MelonLoader or ModLoader based on the engine version.
- * 
- * @param {Object} discovery - The discovery object containing the path to check.
+ * Ensures the modding setup by checking for the existence of the correct mod loader.
+ * It checks for either MelonLoader or ModLoader based on the engine version.
+ * @param {Object} discovery - The game discovery object containing the path to check.
  * @param {boolean} isNewEngine - Indicates whether the engine version is new or not.
- * @returns {Promise} - A promise that resolves with the result of the mod loader check.
+ * @returns {Promise} - A promise that resolves true if the mod loader check was successful.
  * @throws {Error} - If there is an error during the modding setup.
  */
 async function ensureModdingSetup(discovery, isNewEngine) {
@@ -163,8 +159,8 @@ async function ensureModdingSetup(discovery, isNewEngine) {
 }
 
 /**
- * Checks for the existence of the VS Mod Loader.
- * @param {Object} discovery - The discovery object containing the path to check.
+ * Checks for the existence of VS Mod Loader.
+ * @param {Object} discovery - The game discovery object containing the path to check.
  * @returns {boolean} - Returns true if VS Mod Loader exists, false otherwise.
  */
 async function checkForVSModLoader(discovery) {
@@ -188,7 +184,7 @@ async function checkForVSModLoader(discovery) {
 
 /**
  * Checks for the existence of MelonLoader.
- * @param {Object} discovery - The discovery object containing the path to check.
+ * @param {Object} discovery - The game discovery object containing the path to check.
  * @returns {boolean} - Returns true if MelonLoader exists, false otherwise.
  */
 async function checkForMelonLoader(discovery) {
@@ -257,10 +253,9 @@ async function testSupportedContentNewEngine(files, gameId, modPath) {
 }
 
 /**
- * Installs content using for the old engine.
- * 
- * @param {Array} files - The files to be installed.
- * @returns {Promise} - A promise that resolves when the content is installed.
+ * Installs the mod files for the old engine.
+ * @param {string[]} files - The files to be installed.
+ * @returns {Promise<Object[]>} - An array of objects containing the instructions for copying the files.
  */
 async function installContentOldEngine(files) {
   files = prepareFilesOldEngine(files);
@@ -269,7 +264,6 @@ async function installContentOldEngine(files) {
 
 /**
  * Prepares files for the old engine.
- *
  * @param {string[]} files - The array of files to be prepared.
  * @returns {Object[]} - The array of prepared files, each containing a source and destination path.
  */
@@ -318,9 +312,9 @@ function prepareFilesOldEngine(files) {
 }
 
 /**
- * Installs content using for the new engine.
- * @param {Array} files - The files to be installed.
- * @returns {Promise} - A promise that resolves when the content is installed.
+ * Installs the mod files for the new engine.
+ * @param {string[]} files - The files to be installed.
+ * @returns {Promise<Object[]>} - An array of objects containing the instructions for copying the files.
  */
 async function installContentNewEngine(files) {
   files = prepareFilesNewEngine(files);
@@ -329,7 +323,6 @@ async function installContentNewEngine(files) {
 
 /**
  * Prepares files for the new engine.
- * 
  * @param {string[]} files - An array of files to be prepared.
  * @returns {Object[]} - An array of prepared files, each containing a source and destination path.
  */
@@ -375,9 +368,9 @@ function prepareFilesNewEngine(files) {
 }
 
 /**
- * Installs content by copying files from source to destination.
- * @param {Array<Object>} files - An array of file objects containing source and destination paths.
- * @returns {Object} - An object containing the instructions for copying the files.
+ * Installs mod files by copying files from source to destination.
+ * @param {Object[]} files - An array of file objects containing source and destination paths.
+ * @returns {Object[]} - An object containing the instructions for copying the files.
  */
 async function installContent(files) {
   log('info', `[install] files:"${files.map(file => file.source)}"`);
@@ -400,20 +393,18 @@ async function installContent(files) {
 /**
  * Handles the event when a mod is installed.
  * When on old engine, it fixes the mod by editing the main mod file, if necessary.
- *
  * @param {string} gameId - The ID of the game.
- * @param {string} archiveId - The ID of the mod archive.
+ * @param {string} archiveId - The ID of the mod archive (unused).
  * @param {string} modId - The ID of the mod.
- * @param {Object} context - The context object containing the API and state.
+ * @param {Object} context - The modding context object containing the API and state.
  * @returns {Promise} - A promise that resolves when the function completes.
  */
 async function onDidInstallMod(gameId, archiveId, modId, context) {
   const state = context.api.getState();
   const installPath = vortex_api.selectors.installPathForGame(state, gameId);
   const mod = state.persistent.mods?.[gameId]?.[modId];
-  if (!installPath || !mod?.installationPath) {
+  if (!installPath || !mod?.installationPath)
     return;
-  }
 
   // const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
   // if (isNewEngine)
@@ -436,7 +427,7 @@ async function onDidInstallMod(gameId, archiveId, modId, context) {
 }
 
 /**
- * Fixes a mods getMods function by removing the line that makes it fail.
+ * Fixes a mods getMods function by removing the line that makes it fail (old engine only).
  * @param {string} filePath - The path to the mods main file.
  * @returns {boolean} - Whether the fix was successful or not.
  */
@@ -465,7 +456,7 @@ function fixGetMods(filePath) {
 }
 
 /**
- * Finds the main mod file in the specified mod path. For old engine mods.
+ * Finds the main mod file in the specified mod path (old engine only).
  * @param {string} modPath - The path to the mod.
  * @returns {string|undefined} - The path to the main mod file, or undefined if not found.
  */
@@ -501,9 +492,9 @@ function findMainModFile(modPath) {
 }
 
 /**
- * Recursively searches for the "mods" folder within the given folder path. For old engine mods.
+ * Recursively searches for the "mods" folder within the given folder path (old engine only).
  * @param {string} folderPath - The path of the folder to search in.
- * @returns {string|undefined} - The path of the "mods" folder if found, otherwise undefined.
+ * @returns {string|undefined} - The path of the "mods" folder, or undefined if not found.
  */
 function findModsFolder(folderPath) {
   try {
