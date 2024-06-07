@@ -406,9 +406,9 @@ async function onDidInstallMod(gameId, archiveId, modId, context) {
   if (!installPath || !mod?.installationPath)
     return;
 
-  // const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  // if (isNewEngine)
-  // return;
+  const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
+  if (isNewEngine === true)
+    return;
 
   log('info', `[old-e] fixing old mod:"${modId}" on path:"${mod.installationPath}"`);
   const mainModPath = findMainModFile(path.join(installPath, mod.installationPath));
