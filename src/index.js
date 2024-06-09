@@ -214,8 +214,10 @@ async function checkForMelonLoader(discovery) {
  * @returns {Promise<{ supported: boolean, requiredFiles: string[] }>} - An object containing the supported state and required files.
  */
 async function testSupportedContentOldEngine(files, gameId, modPath) {
+  if (gameId !== GAME.id)
+    return { supported: false, requiredFiles: [] };
   const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  let supported = gameId === GAME.id && files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  let supported = files.some(file => OLD_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported === false && files.some(file => file.replaceAll('\\', '/').includes('renderer/') || file.replaceAll('\\', '/').includes('assets/')))
     supported = true;
   if (supported && isNewEngine) {
@@ -238,8 +240,10 @@ async function testSupportedContentOldEngine(files, gameId, modPath) {
  * @returns {Promise<{ supported: boolean, requiredFiles: string[] }>} - An object containing the supported state and required files.
  */
 async function testSupportedContentNewEngine(files, gameId, modPath) {
+  if (gameId !== GAME.id)
+    return { supported: false, requiredFiles: [] };
   const isNewEngine = await checkEngineVersion(DISCOVERY_PATH);
-  const supported = gameId === GAME.id && files.some(file => NEW_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
+  const supported = files.some(file => NEW_EXTS.some(ext => path.extname(file).toLowerCase() === ext.extension));
   if (supported && !isNewEngine) {
     CONTEXT_API.sendNotification({
       id: `is_old_engine${(path.parse(path.basename(modPath)).name).toLowerCase()}`,
